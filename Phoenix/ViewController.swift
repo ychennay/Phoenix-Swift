@@ -47,9 +47,22 @@ class ViewController: UIViewController {
         
         let context = appDelegate.persistentContainer.viewContext
         
+        let newValue = NSEntityDescription.insertNewObject(forEntityName: "Users", into: context)
+        
+        newValue.setValue("James", forKey: "first_name" )
+        newValue.setValue(40, forKey: "age")
+        
+        do {
+            try context.save()
+            print ("Context was saved")
+        } catch {
+            print ("There was an error saving the context.")
+        }
+        
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Users")
         
         request.returnsObjectsAsFaults = false
+        request.predicate = NSPredicate(format: "age > %@", "20")
         
         do {
             
@@ -62,8 +75,9 @@ class ViewController: UIViewController {
                     loginButton.alpha = 0
                     textLabel.alpha = 1
                     textLabel.text = "Hi there, " + username + "!"
-                    
+                 print(username)
                 }
+
             }
             
             
